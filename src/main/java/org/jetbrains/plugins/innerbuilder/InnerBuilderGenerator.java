@@ -179,6 +179,7 @@ public class InnerBuilderGenerator implements Runnable {
 
         final PsiType targetClassType = psiElementFactory.createType(targetClass);
         final PsiParameter constructorParameter = psiElementFactory.createParameter("copy", targetClassType);
+        PsiUtil.setModifierProperty(constructorParameter, PsiModifier.FINAL, true);
         final PsiModifierList parameterModifierList = constructorParameter.getModifierList();
 
         if (parameterModifierList != null) {
@@ -223,6 +224,7 @@ public class InnerBuilderGenerator implements Runnable {
                 final String fieldName = field.getName();
 
                 final PsiParameter parameter = psiElementFactory.createParameter(fieldName, fieldType);
+                PsiUtil.setModifierProperty(parameter, PsiModifier.FINAL, true);
                 final PsiModifierList parameterModifierList = parameter.getModifierList();
                 final boolean useJsr305 = options.contains(InnerBuilderOption.JSR305_ANNOTATIONS);
                 final boolean useFindbugs = options.contains(InnerBuilderOption.FINDBUGS_ANNOTATION);
@@ -312,6 +314,7 @@ public class InnerBuilderGenerator implements Runnable {
 
         setterMethod.getModifierList().setModifierProperty(PsiModifier.PUBLIC, true);
         final PsiParameter setterParameter = psiElementFactory.createParameter(parameterName, fieldType);
+        PsiUtil.setModifierProperty(setterParameter, PsiModifier.FINAL, true);
 
         if (!(fieldType instanceof PsiPrimitiveType)) {
             final PsiModifierList setterParameterModifierList = setterParameter.getModifierList();
@@ -341,6 +344,7 @@ public class InnerBuilderGenerator implements Runnable {
         constructor.getModifierList().setModifierProperty(PsiModifier.PRIVATE, true);
 
         final PsiParameter builderParameter = psiElementFactory.createParameter("builder", builderType);
+        PsiUtil.setModifierProperty(builderParameter, PsiModifier.FINAL, true);
         constructor.getParameterList().add(builderParameter);
 
         final PsiCodeBlock constructorBody = constructor.getBody();
